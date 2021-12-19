@@ -27,37 +27,47 @@ library(dplyr)
 library(lessR)
 ```
 
-
+-extracting data from .dat file where seperator is '::'
+-making extracted data a dataframe
+-displaying its top 6 rows
 ```{r}
 movies = do.call(rbind,strsplit(readLines('movies.dat'),'::',fixed=T))
 movies <- as.data.frame(movies)
 head(movies)
 ```
 
-
+-assigning column names to dataframe
+-making ID column numeric
+-displaying its top 6 rows
 ```{r}
 colnames(movies) <- c("ID","Title","Genre")
 movies$ID <- as.numeric(movies$ID)
 head(movies)
 ```
 
+-extracting data from .dat file where seperator is '::'
+-displaying its top 6 rows
 ```{r}
 ratings = read.delim("ratings.dat", header= FALSE ,sep = ':', colClasses = c(NA, "NULL"))
 head(ratings)
 ```
-
+-assigning column names to dataframe
+-making ID column numeric
+-displaying its top 6 rows
 ```{r}
 colnames(ratings) <- c("User","ID","Ratings","Timestamp")
 head(ratings)
 ```
 
+-merging dataframes based on ID
+-displaying its top 6 rows
 ```{r}
 data = merge(movies,ratings,by = "ID")
 data = data[with(data, order(ID)),]
 head(data)
 ```
 
-
+-ploting pie chart
 ```{r}
 ratings<- dplyr::count(data, Ratings, sort = TRUE) %>% 
   mutate(perc = `n` / sum(`n`)) %>% 
